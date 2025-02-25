@@ -6,7 +6,7 @@ function DashboardLayout() {
     <div>
       <DashboardNavbar />
       <div className="container mx-auto p-4">
-        <Outlet /> {/* Renders nested routes */}
+        <Outlet />
       </div>
     </div>
   );

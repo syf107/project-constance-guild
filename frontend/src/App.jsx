@@ -1,17 +1,22 @@
-import { BrowserRouter } from "react-router";
-import Navbar from "./components/Navbar";
+import { BrowserRouter, useLocation } from "react-router";
+import HomeLayout from "./layouts/HomeLayout";
+import DashboardLayout from "./layouts/DashboardLayout";
 import AppRouter from "./routes/Router";
 
+function Layout() {
+  const location = useLocation();
+  const hideNavbar = location.pathname.startsWith("/dashboard");
+
+  return <> {!hideNavbar && <HomeLayout />}</>;
+}
 function App() {
   return (
     <>
       <BrowserRouter>
-        <Navbar />
         <div className="container mx-auto p-4">
+          <Layout />
           <AppRouter />
         </div>
-        <h1 className="text-red-700 text-3xl">Just a freaking applications.</h1>
-        <h1>Just a freaking applications.</h1>
       </BrowserRouter>
     </>
   );
