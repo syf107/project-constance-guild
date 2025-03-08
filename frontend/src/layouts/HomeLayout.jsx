@@ -1,13 +1,13 @@
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import { Outlet } from "react-router";
 
 export default function HomeLayout() {
   return (
-    <>
+    <main className="container mx-auto">
       <Navbar />
-      <div className="container mx-auto p-4">
-        <Outlet />
-      </div>
-    </>
+      <Outlet />
+      <Footer />
+    </main>
   );
 }

@@ -3,17 +3,15 @@ import About from "../components/About";
 import Features from "../components/Features";
 import Testimonials from "../components/Testimonials";
 import CallToAction from "../components/CTA";
-import Footer from "../components/Footer";
 
 export default function Home() {
   return (
-    <>
+    <main>
       <Hero />
       <About />
       <Features />
       <Testimonials />
       <CallToAction />
-      <Footer />
-    </>
+    </main>
   );
 }

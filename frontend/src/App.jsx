@@ -1,20 +1,14 @@
 import { BrowserRouter, useLocation } from "react-router";
-import HomeLayout from "./layouts/HomeLayout";
-import DashboardLayout from "./layouts/DashboardLayout";
 import AppRouter from "./routes/Router";
 
-function Layout() {
-  const location = useLocation();
-  const hideNavbar = location.pathname.startsWith("/dashboard");
-
-  return <> {!hideNavbar && <HomeLayout />}</>;
-}
 function App() {
   return (
     <>
       <BrowserRouter>
-        <div className="container mx-auto p-4">
-          <Layout />
+        <div className="bg-amber-500 w-full mx-auto">
+          <p className="bg-amber-500 text-black text-3xl font-bold text-center py-4">
+            ⚔️ Constance Guild ⚔️
+          </p>
           <AppRouter />
         </div>
       </BrowserRouter>

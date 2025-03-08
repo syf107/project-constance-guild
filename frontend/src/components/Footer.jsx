@@ -1,5 +1,39 @@
+import { Link } from "react-router";
+
 function Footer() {
-  return <h1>This is the footer section.</h1>;
+  return (
+    <footer className="mt-auto bg-gray-900 text-white py-2 px-4">
+      <section className="flex justify-between items-center">
+        <h2 className="text-xl font-bold">Constance Guild</h2>
+        <p>Forged in unity, standing strong for centuries.</p>
+      </section>
+
+      <div className="flex justify-between items-end">
+        <p className="text-sm">
+          &copy; 2025 Constance Guild. All rights reserved.
+        </p>
+        <nav aria-label="Footer Navigation">
+          <ul className="flex gap-4 font-bold">
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/history">History</Link>
+            </li>
+            <li>
+              <Link to="/leaderboard">Leaderboard</Link>
+            </li>
+            <li>
+              <Link to="/quests">Quests</Link>
+            </li>
+            <li>
+              <Link to="/register">Join Us</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </footer>
+  );
 }
 
 export default Footer;

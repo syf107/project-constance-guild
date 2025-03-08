@@ -10,16 +10,19 @@ import DashboardHome from "../pages/DashboardHome";
 import DashboardMembers from "../pages/DashboardMembers";
 import DashboardQuests from "../pages/DashboardQuests";
 import DashboardParty from "../pages/DashboardParty";
+import HomeLayout from "../layouts/HomeLayout";
 
 function AppRouter() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/history" element={<History />} />
-      <Route path="/leaderboard" element={<Leaderboard />} />
-      <Route path="/quests" element={<Quests />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<HomeLayout />}>
+        <Route index element={<Home />} />
+        <Route path="history" element={<History />} />
+        <Route path="leaderboard" element={<Leaderboard />} />
+        <Route path="quests" element={<Quests />} />
+        <Route path="register" element={<Register />} />
+        <Route path="login" element={<Login />} />
+      </Route>
 
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<DashboardHome />} />
