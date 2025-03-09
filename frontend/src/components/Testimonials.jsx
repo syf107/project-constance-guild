@@ -32,18 +32,23 @@ const guildTestimonials = [
 
 function Testimonials() {
   return (
-    <section>
-      {guildTestimonials.map((testimonial, index) => (
-        <figure key={index}>
-          <h2>{testimonial.title}</h2>
-          <blockquote>
-            <p>"{testimonial.testimony}"</p>
-          </blockquote>
-          <figcaption>
-            - {testimonial.name}, <cite>{testimonial.class}</cite>
-          </figcaption>
-        </figure>
-      ))}
+    <section className="py-15 bg-amber-500 text-amber-900">
+      <div className="w-4/5 mx-auto">
+        <h1 className="text-5xl font-bold text-center mb-10">
+          Testimonials from Adventurers
+        </h1>
+        {guildTestimonials.map((testimonial, index) => (
+          <figure key={index}>
+            <h2>{testimonial.title}</h2>
+            <blockquote>
+              <p>"{testimonial.testimony}"</p>
+            </blockquote>
+            <figcaption>
+              - {testimonial.name}, <cite>{testimonial.class}</cite>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
     </section>
   );
 }

@@ -24,17 +24,37 @@ const featuresContent = [
 
 function Features() {
   return (
-    <section>
-      <h1>What Awaits You in the Constance Guild?</h1>
-      {featuresContent.map((feature, index) => (
-        <article key={index}>
-          <img src={feature.picture} alt={feature.alt} />
-          <div>
-            <h2>{feature.title}</h2>
-            <p>{feature.description}</p>
-          </div>
-        </article>
-      ))}
+    <section className="py-15 text-amber-400 bg-amber-700">
+      <h1 className="font-bold text-5xl text-center mb-10">
+        What Awaits You in the Constance Guild?
+      </h1>
+      <div className="w-4/5 mx-auto">
+        {featuresContent.map((feature, index) => (
+          <article
+            className={
+              "border-4 px-4 py-3  gap-3 mb-15 items-start hover:text-amber-700 hover:bg-amber-400 hover:border-amber-800"
+            }
+            key={index}
+          >
+            <h2 className="text-2xl font-bold  text-center py-5">
+              {feature.title}
+            </h2>
+
+            <div
+              className={`flex items-center border-y-4 border-double px-5 py-5 ${
+                index % 2 == 0 ? "flex-row-reverse" : "flex-row"
+              }`}
+            >
+              <img
+                className="max-w-5/10 px-3 py-3"
+                src={feature.picture}
+                alt={feature.alt}
+              />
+              <p className="text-md text-justify pt-3">{feature.description}</p>
+            </div>
+          </article>
+        ))}
+      </div>
     </section>
   );
 }

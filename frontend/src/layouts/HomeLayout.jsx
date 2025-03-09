@@ -4,7 +4,7 @@ import { Outlet } from "react-router";
 
 export default function HomeLayout() {
   return (
-    <main className="container mx-auto">
+    <main className="border-4 border-amber-700 container mx-auto">
       <Navbar />
       <Outlet />
       <Footer />

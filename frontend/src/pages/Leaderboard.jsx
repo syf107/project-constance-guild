@@ -1,3 +1,3 @@
 export default function Leaderboard() {
-  return <h1>This is your Leaderboard Page.</h1>;
+  return <h1 className="h-screen">This is your Leaderboard Page.</h1>;
 }
