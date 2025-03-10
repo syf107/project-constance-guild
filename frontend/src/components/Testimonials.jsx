@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+
 const guildTestimonials = [
   {
     title: "📜 Only a Few Months, and I've Already Grown Stronger!",
@@ -31,23 +34,55 @@ const guildTestimonials = [
 ];
 
 function Testimonials() {
+  // the value of index stored for the testimonials.
+  const [index, setIndex] = useState(0);
+
+  // Go to the next testimonial
+  const nextTestimonial = () => {
+    setIndex((prev) => (prev + 1) % guildTestimonials.length);
+    console.log(prev);
+  };
+
+  //Go to the previous testimonial
+  const prevTestimonial = () => {
+    setIndex(
+      (prev) => (prev - 1 + guildTestimonials.length) % guildTestimonials.length
+    );
+    console.log(prev);
+  };
+
   return (
     <section className="py-15 bg-amber-500 text-amber-900">
       <div className="w-4/5 mx-auto">
         <h1 className="text-5xl font-bold text-center mb-10">
           Testimonials from Adventurers
         </h1>
-        {guildTestimonials.map((testimonial, index) => (
-          <figure key={index}>
-            <h2>{testimonial.title}</h2>
-            <blockquote>
-              <p>"{testimonial.testimony}"</p>
-            </blockquote>
-            <figcaption>
-              - {testimonial.name}, <cite>{testimonial.class}</cite>
-            </figcaption>
-          </figure>
-        ))}
+        <div className="relative w-full mx-auto text-center border-4 px-10 py-15">
+          <h2 className="text-left">{guildTestimonials[index].title}</h2>
+          <blockquote>
+            <p className="text-justify">
+              "{guildTestimonials[index].testimony}"
+            </p>
+          </blockquote>
+          <figcaption className="text-right">
+            - {guildTestimonials[index].name},{" "}
+            <cite>{guildTestimonials[index].class}</cite>
+          </figcaption>
+
+          {/* Buttons */}
+          <button
+            onClick={prevTestimonial}
+            className="absolute left-0 top-1/2 -translate-y-1/2"
+          >
+            <FaChevronLeft />
+          </button>
+          <button
+            onClick={nextTestimonial}
+            className="absolute right-0 top-1/2 -translate-y-1/2"
+          >
+            <FaChevronRight />
+          </button>
+        </div>
       </div>
     </section>
   );
