@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const guildTestimonials = [
@@ -36,11 +36,11 @@ const guildTestimonials = [
 function Testimonials() {
   // the value of index stored for the testimonials.
   const [index, setIndex] = useState(0);
+  const intervalRef = useRef(null);
 
   // Go to the next testimonial
   const nextTestimonial = () => {
     setIndex((prev) => (prev + 1) % guildTestimonials.length);
-    console.log(prev);
   };
 
   //Go to the previous testimonial
@@ -48,7 +48,29 @@ function Testimonials() {
     setIndex(
       (prev) => (prev - 1 + guildTestimonials.length) % guildTestimonials.length
     );
-    console.log(prev);
+  };
+
+  // autoslide
+
+  const startAutoSlide = () => {
+    intervalRef.current = setInterval(() => {
+      setIndex((prev) => (prev + 1) % guildTestimonials.length);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    startAutoSlide();
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
+  // Function to pause the autoslide
+  const pauseAutoSlide = () => {
+    clearInterval(intervalRef.current);
+  };
+
+  // Function to start the autoslide again
+  const resumeAutoSlide = () => {
+    startAutoSlide();
   };
 
   return (
@@ -57,14 +79,20 @@ function Testimonials() {
         <h1 className="text-5xl font-bold text-center mb-10">
           Testimonials from Adventurers
         </h1>
-        <div className="relative w-full mx-auto text-center border-4 px-10 py-15">
-          <h2 className="text-left">{guildTestimonials[index].title}</h2>
+        <div
+          onMouseEnter={pauseAutoSlide}
+          onMouseLeave={resumeAutoSlide}
+          className="relative h-fill w-full mx-auto text-center border-y-4 border-double shadow-2xl px-5 py-5"
+        >
+          <h2 className="text-left text-2xl mb-7">
+            {guildTestimonials[index].title}
+          </h2>
           <blockquote>
-            <p className="text-justify">
+            <p className="text-justify pl-2 mx-10 text-lg italic border-l-4">
               "{guildTestimonials[index].testimony}"
             </p>
           </blockquote>
-          <figcaption className="text-right">
+          <figcaption className="text-right pr-10">
             - {guildTestimonials[index].name},{" "}
             <cite>{guildTestimonials[index].class}</cite>
           </figcaption>
@@ -72,16 +100,31 @@ function Testimonials() {
           {/* Buttons */}
           <button
             onClick={prevTestimonial}
-            className="absolute left-0 top-1/2 -translate-y-1/2"
+            className="absolute left-3 top-1/2 -translate-y-1/2 hover:cursor-pointer"
           >
-            <FaChevronLeft />
+            <FaChevronLeft size={20} />
           </button>
           <button
             onClick={nextTestimonial}
-            className="absolute right-0 top-1/2 -translate-y-1/2"
+            className="absolute right-3 top-1/2 -translate-y-1/2 hover:cursor-pointer"
           >
-            <FaChevronRight />
+            <FaChevronRight size={20} />
           </button>
+          {/*  Navigating comment button */}
+          <div className="flex flex-row justify-center gap-1 mt-7">
+            {guildTestimonials.map((_, indexTestimonial) => {
+              console.log(index, indexTestimonial);
+              return (
+                <button
+                  key={indexTestimonial}
+                  onClick={() => setIndex(indexTestimonial)}
+                  className={`h-2 w-2 rounded-3xl hover:cursor-pointer ${
+                    index === indexTestimonial ? "bg-amber-700" : "bg-amber-900"
+                  }`}
+                ></button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
