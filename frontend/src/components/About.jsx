@@ -2,8 +2,8 @@ import { Link } from "react-router";
 
 function About() {
   return (
-    <section className="container bg-amber-500  border-b-4 border-amber-70 pb-15">
-      <div className="bg-linear-to-b from-amber-500 from-0% via-amber-400 via-30% to-amber-500 to-90% ">
+    <section className="container bg-amber-500  border-b-4 border-amber-700 pb-15">
+      <div className="bg-linear-to-b from-amber-500 from-0% via-amber-300 via-50% to-amber-500 to-100% ">
         <div className="text-center mx-auto w-4/5 text-amber-900">
           <h1 className="text-4xl font-bold pb-5">About Constance Guild</h1>
           <p className="text-lg text-justify mb-8">

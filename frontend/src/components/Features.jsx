@@ -32,7 +32,7 @@ function Features() {
         {featuresContent.map((feature, index) => (
           <article
             className={
-              "border-4 px-4 py-3  gap-3 mb-15 items-start hover:text-amber-700 hover:bg-amber-400 hover:border-amber-80 hover:shadow-xl transition-colors duration-500"
+              "border-4 border-double px-4 py-3  gap-3 mb-15 items-start hover:text-amber-700 hover:bg-amber-400 hover:border-amber-80 hover:shadow-xl transition-colors duration-500"
             }
             key={index}
           >

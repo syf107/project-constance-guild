@@ -1,6 +1,6 @@
 function CallToAction() {
   return (
-    <section>
+    <section className="bg-linear-to-b from-amber-700 to-amber-400">
       <h1>What are you waiting for?</h1>;
       <div>
         <p>300++</p>

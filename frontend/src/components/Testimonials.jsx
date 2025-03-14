@@ -74,7 +74,7 @@ function Testimonials() {
   };
 
   return (
-    <section className="py-15 bg-amber-500 text-amber-900">
+    <section className="py-15 bg-amber-400 text-amber-700">
       <div className="w-4/5 mx-auto">
         <h1 className="text-5xl font-bold text-center mb-10">
           Testimonials from Adventurers
@@ -82,17 +82,17 @@ function Testimonials() {
         <div
           onMouseEnter={pauseAutoSlide}
           onMouseLeave={resumeAutoSlide}
-          className="relative h-fill w-full mx-auto text-center border-y-4 border-double shadow-2xl px-5 py-5"
+          className="bg-amber-700 text-amber-400 relative h-fill w-full mx-auto text-center border-double border-4 shadow-2xl px-10 py-15 hover:bg-amber-400 hover:text-amber-700 transition-all duration-500"
         >
-          <h2 className="text-left text-2xl mb-7">
+          <h2 className="text-left text-2xl mb-2 font-bold">
             {guildTestimonials[index].title}
           </h2>
-          <blockquote>
-            <p className="text-justify pl-2 mx-10 text-lg italic border-l-4">
+          <blockquote className="border-double border-y-4 mb-5 py-10">
+            <p className="text-justify pl-2 mx-10 text-lg italic border-l-4 ">
               "{guildTestimonials[index].testimony}"
             </p>
           </blockquote>
-          <figcaption className="text-right pr-10">
+          <figcaption className="text-right pr-2 font-bold">
             - {guildTestimonials[index].name},{" "}
             <cite>{guildTestimonials[index].class}</cite>
           </figcaption>
@@ -110,16 +110,15 @@ function Testimonials() {
           >
             <FaChevronRight size={20} />
           </button>
-          {/*  Navigating comment button */}
+          {/*  Pagination comment button */}
           <div className="flex flex-row justify-center gap-1 mt-7">
             {guildTestimonials.map((_, indexTestimonial) => {
-              console.log(index, indexTestimonial);
               return (
                 <button
                   key={indexTestimonial}
                   onClick={() => setIndex(indexTestimonial)}
-                  className={`h-2 w-2 rounded-3xl hover:cursor-pointer ${
-                    index === indexTestimonial ? "bg-amber-700" : "bg-amber-900"
+                  className={`h-2 w-2 border-1 rounded-3xl hover:cursor-pointer ${
+                    index === indexTestimonial ? "bg-amber-700" : "bg-amber-400"
                   }`}
                 ></button>
               );

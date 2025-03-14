@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 
 const navbarStyling =
-  "hover:text-amber-300 hover:bg-amber-700 px-4 py-2 transition-colors duration-200";
+  "border-4 border-amber-400 border-double px-4 py-2 hover:bg-amber-700 hover:text-amber-400 transition-colors duration-200";
 
 function Navbar() {
   return (
@@ -9,7 +9,10 @@ function Navbar() {
       <div className="container mx-auto flex justify-center p-3">
         <ul className="flex space-x-6 text-xl">
           <li>
-            <Link to="/" className={navbarStyling}>
+            <Link
+              to="/"
+              className="border-4 border-amber-400 border-double px-4 py-2 hover:bg-amber-700 hover:text-amber-400 transition-colors duration-200"
+            >
               Home 🏚️
             </Link>
           </li>
