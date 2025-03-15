@@ -76,7 +76,7 @@ function FAQ() {
               {faq.question}
               <span
                 className={`transform transition-transform duration-300 ${
-                  openIndex === index ? "rotate-180" : "rotate-0"
+                  openIndex === index ? "rotate-180" : "rotate-720"
                 }`}
               >
                 ▲

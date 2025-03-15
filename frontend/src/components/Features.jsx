@@ -50,7 +50,9 @@ function Features() {
                 src={feature.picture}
                 alt={feature.alt}
               />
-              <p className="text-md text-justify pt-3">{feature.description}</p>
+              <p className="text-md text-justify pt-3 indent-10">
+                {feature.description}
+              </p>
             </div>
           </article>
         ))}
