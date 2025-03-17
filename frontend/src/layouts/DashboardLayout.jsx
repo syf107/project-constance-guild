@@ -6,7 +6,7 @@ function DashboardLayout() {
   return (
     <main>
       <DashboardNavbar />
-      <div className="bg-amber-200 container mx-auto p-4">
+      <div className="container mx-auto p-4">
         <Outlet />
       </div>
       <Footer />
