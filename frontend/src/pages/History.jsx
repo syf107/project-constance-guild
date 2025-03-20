@@ -2,7 +2,7 @@ import CTAButton from "../components/CTAButton";
 
 export default function History() {
   return (
-    <section className="text-amber-900 container w-9/10 mx-auto indent-10 text-xl/10 text-justify my-15 border-4 border-double border-amber-800 bg-amber-400 px-10 py-15 flex flex-col gap-y-5 h-fill">
+    <section className="text-amber-900 container w-9/10 mx-auto indent-10 text-xl/10 text-justify my-15 border-4 border-double border-amber-900 bg-amber-400 px-10 py-15 flex flex-col gap-y-5 h-fill">
       <h1 className="text-5xl font-bold text-center mb-5">
         The History of Constance Guild
       </h1>

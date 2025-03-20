@@ -21,7 +21,7 @@ function Footer() {
               <Link to="/history">History</Link>
             </li>
             <li>
-              <Link to="/leaderboard">Leaderboard</Link>
+              <Link to="/members">Guild Members</Link>
             </li>
             <li>
               <Link to="/quests">Quests</Link>

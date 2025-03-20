@@ -22,7 +22,7 @@ function Navbar() {
             </Link>
           </li>
           <li>
-            <Link to="/leaderboard" className={navbarStyling}>
+            <Link to="/members" className={navbarStyling}>
               Guild Members 👨👩
             </Link>
           </li>
