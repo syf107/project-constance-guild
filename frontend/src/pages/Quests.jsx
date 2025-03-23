@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CTAButton from "../components/CTAButton";
 
 const quests = [
   {
@@ -247,12 +248,7 @@ const quests = [
 
 export default function Quests() {
   const [selectedQuest, setSelectedQuest] = useState(null);
-  const [openedDetails, setOpenedDetails] = useState(false);
 
-  function openDetails(quest) {
-    setSelectedQuest(quest);
-    setOpenedDetails(true);
-  }
   return (
     <section className="my-15 px-10 py-15 w-9/10 container mx-auto text-amber-900 bg-amber-400 border-double border-4 border-amber-900">
       <h1 className="text-5xl font-bold text-center mb-10">Quests</h1>
@@ -277,58 +273,87 @@ export default function Quests() {
             <div
               className={`grid ${
                 selectedQuest !== null ? "grid-cols-1" : "grid-cols-3"
-              } gap-4`}
+              } gap-4 transition-all duration-500 ease-in-out`}
             >
-              {quests.map((quest) => (
-                <div
-                  key={quest.id}
-                  className="pb-4 pr-4 pt-2 pl-2 border-1 border-amber-900 shadow-md cursor-pointer hover:bg-amber-400 hover:shadow-amber-800 hover:text-amber-800 transition duration-300"
-                  onClick={() => openDetails(quest)}
-                >
-                  <h2 className="text-lg font-semibold">{quest.title}</h2>
-                  <p>{quest.location}</p>
-                  <p className="text-sm">Type: {quest.type}</p>
-                  <p className="text-sm">
-                    Difficulty: {"⭐".repeat(quest.difficulty)}
-                  </p>
-                </div>
-              ))}
+              {quests.map((quest, index) => {
+                console.log(index);
+                const isSelected =
+                  selectedQuest && selectedQuest.title === quest.title;
+
+                return (
+                  <div
+                    key={index}
+                    className={`pb-4 pr-4 pt-2 pl-2 border-1 border-amber-900 shadow-md cursor-pointer hover:bg-amber-400 hover:shadow-amber-800 hover:text-amber-800 transition duration-300 ${
+                      isSelected && "bg-amber-400 text-amber-800"
+                    }`}
+                    onClick={() => setSelectedQuest(quest)}
+                  >
+                    <h2 className="text-xl font-semibold">{quest.title}</h2>
+                    <p>{quest.location}</p>
+                    <p className="text-sm">Type: {quest.type}</p>
+                    <p className="text-sm">
+                      Difficulty: {"⭐".repeat(quest.difficulty)}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
           {selectedQuest && (
             <div
-              className={`h-full bg-amber-400 border-double border-4 border-amber-900 shadow-lg p-6 overflow-y-auto ${
-                openedDetails !== null ? "col-span-2" : "hidden"
-              } text-amber-900`}
+              className={`relative bg-amber-400 border-double border-4 border-amber-900 shadow-lg p-6 overflow-y-auto ${
+                selectedQuest !== null ? "col-span-2" : "hidden"
+              } text-amber-900 flex flex-col gap-5 transition-all duration-500 ease-in-out`}
             >
-              <h3>Quest Details</h3>
               <button
-                className="top-2 right-2 text-lg"
+                className="absolute top-2 right-2 text-lg font-5xl hover:cursor-pointer"
                 onClick={() => setSelectedQuest(null)}
               >
                 ✖
               </button>
-              <h2 className="text-2xl font-bold">{selectedQuest.title}</h2>
-              <p className="text-sm mt-2">{selectedQuest.objective}</p>
-              <p>
-                <strong>Location: {selectedQuest.location}</strong>
-              </p>
-              <p>
-                <strong>Time Limit:</strong>
-              </p>
-              <p>
-                <strong>Rewards:</strong>
-              </p>
-              <p>
-                <strong>Quest Giver:</strong>
-              </p>
-              <p>
-                <strong>Party Required:</strong>{" "}
-              </p>
-              <p>
-                <strong>Status:</strong>
-              </p>
+              <div>
+                <h2 className="text-2xl font-bold text-center border-b-4 border-double border-amber-900 pb-2">
+                  📜 {selectedQuest.title}
+                </h2>
+                <div className="bg-amber-600 text-amber-300 text-sm flex flex-row justify-between border-amber-700">
+                  <p className="flex-1 italic">🗺 {selectedQuest.location}</p>
+                  <p className="flex-1 text-center font-semibold">
+                    "{selectedQuest.type}"
+                  </p>
+                  <p className="flex-1 text-right">
+                    {"⭐".repeat(selectedQuest.difficulty)}
+                  </p>
+                </div>
+              </div>
+              <div className="">
+                <h3 className="text-xl font-semibold border-b-2 border-amber-700">
+                  Quest Details
+                </h3>
+                <p className="text-md mt-2">🎯: {selectedQuest.objective}</p>
+                <p>
+                  ⏳: {selectedQuest.timeLimit}{" "}
+                  {selectedQuest.timeLimit > 1 ? "days" : "day"}
+                </p>
+                <p>
+                  {selectedQuest.partyRequired
+                    ? "👥 Party Quest"
+                    : "👤 Solo Quest"}
+                </p>
+                <p className="text-right text-sm">
+                  Requested by: {selectedQuest.questGiver}
+                </p>
+              </div>
+
+              <div className="">
+                <h3 className="text-xl font-semibold border-b-2 border-amber-700">
+                  Rewards
+                </h3>
+                <p>🏆: {selectedQuest.rewards.contributionPoints} points</p>
+                <p>🟡: {selectedQuest.rewards.gold} golds</p>
+                <p>🎁: {selectedQuest.rewards.items.join(", ")}</p>
+              </div>
+              <CTAButton text={"You can take the quest by joining the Guild"} />
             </div>
           )}
         </div>
