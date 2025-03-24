@@ -1,36 +1,38 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 
-	"github.com/go-chi/chi/v5"
 	_ "github.com/lib/pq"
+	"github.com/syf107/constance-guild-project/internal/data"
+	"github.com/syf107/constance-guild-project/internal/routes"
 )
 
 func main() {
-	r := chi.NewRouter()
+	// Initialize the database
 
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("API is running..."))
-	})
-
-	r.Get("/users", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("This going to be the users information."))
-	})
-
-	dbURL := os.Getenv("DATABASE_URL")
-	db, err := sql.Open("postgres", dbURL)
+	db, err := data.OpenDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	defer db.Close()
 
-	fmt.Println("Server running on the port 8000")
-	http.ListenAndServe(":8000", r)
+	// Setup the router
+	r := routes.Routes()
+
+	// Start the server
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "4000"
+	}
+
+	log.Println("Server running on port", port)
+	err = http.ListenAndServe(":"+port, r)
+	if err != nil {
+		log.Fatal("Server error:", err)
+	}
 
 }
