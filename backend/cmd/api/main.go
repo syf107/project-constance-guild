@@ -18,6 +18,10 @@ func main() {
 		w.Write([]byte("API is running..."))
 	})
 
+	r.Get("/users", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("This going to be the users information."))
+	})
+
 	dbURL := os.Getenv("DATABASE_URL")
 	db, err := sql.Open("postgres", dbURL)
 	if err != nil {
