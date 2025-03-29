@@ -1,0 +1,6 @@
+BEGIN;
+
+DROP TABLE IF EXISTS quest_applications;
+DROP TABLE IF EXISTS quests;
+
+COMMIT;

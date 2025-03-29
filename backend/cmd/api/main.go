@@ -6,6 +6,7 @@ import (
 	"os"
 
 	_ "github.com/lib/pq"
+
 	"github.com/syf107/constance-guild-project/internal/data"
 	"github.com/syf107/constance-guild-project/internal/routes"
 )
@@ -19,6 +20,8 @@ func main() {
 	}
 
 	defer db.Close()
+
+	log.Println("Connected to database successfully")
 
 	// Setup the router
 	r := routes.Routes()

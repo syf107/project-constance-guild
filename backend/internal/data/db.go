@@ -9,10 +9,14 @@ import (
 )
 
 func OpenDB() (*sql.DB, error) {
-	dsn := os.Getenv("DATABASE_URL")
+	dsn := os.Getenv("CONSTANCEGUILD_DB_DSN")
+	if dsn == "" {
+		return nil, fmt.Errorf("CONSTANCEGUILD_DB_DSN is not set")
+	}
+
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Missing database connection string: ",err)
 	}
 
 	// Set database connection settings.
