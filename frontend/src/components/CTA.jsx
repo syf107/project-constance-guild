@@ -3,7 +3,7 @@ import CTAButton from "./CTAButton";
 function CallToAction() {
   return (
     <section className="w-full bg-amber-700">
-      <div className="relative bg-[url(images/land.jpg)] bg-cover bg-no-repeat bg-center h-screen">
+      <div className="relative bg-[url(/images/land.jpg)] bg-cover bg-no-repeat bg-center h-screen">
         <div className="absolute inset-0 bg-linear-to-b from-amber-700 from-10%"></div>
         <div className="relative flex-row justify-items-center">
           <h1 className="text-center font-bold text-4xl text-amber-400 mb-10">

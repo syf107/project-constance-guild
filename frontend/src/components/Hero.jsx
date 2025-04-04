@@ -2,7 +2,7 @@ import CTAButton from "./CTAButton";
 
 function Hero() {
   return (
-    <section className="relative bg-[url(images/guild-market.webp)] bg-cover bg-no-repeat bg-center h-screen">
+    <section className="relative bg-[url(/images/guild-market.webp)] bg-cover bg-no-repeat bg-center h-screen">
       <div className="absolute inset-0 bg-linear-to-b from-amber-900 from-20% via-transparent via-85% to-amber-500 to-95%"></div>
       <div className="relative text-center pt-15">
         <h1 className="text-5xl font-bold mb-1 text-amber-400">
