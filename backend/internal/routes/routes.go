@@ -10,12 +10,14 @@ import (
 func Routes() *chi.Mux {
 	r := chi.NewRouter()
 
-	// Define routes
-	r.Get("/users", func(w http.ResponseWriter, r *http.Request) {
+	// adventurers handler.
+
+	// quest handlers.
+	r.Post("v1/quests", handlers.createQuestHandler)
+
+	r.Get("/v1/healthcheck", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Temporary request."))
 	})
-	// r.Post("/users", CreateUserHandler)
-
 
 	return r
 }
