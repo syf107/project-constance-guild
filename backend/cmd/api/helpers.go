@@ -14,7 +14,7 @@ type envelope map[string]interface{}
 
 // readIDParam reads interpolated "id" from request URL and returns it and nil. If there is an error
 // it returns and 0 and an error.
-func readIDParam(r *http.Request) (int64, error) {
+func ReadIDParam(r *http.Request) (int64, error) {
 	idParam := chi.URLParam(r, "id")
 
 	id, err := strconv.ParseInt(idParam, 10, 64)
@@ -23,10 +23,9 @@ func readIDParam(r *http.Request) (int64, error) {
 	}
 
 	return id, nil
-
 }
 
-func writeJSON(w http.ResponseWriter, status int, data envelope, headers http.Header) error {
+func WriteJSON(w http.ResponseWriter, status int, data envelope, headers http.Header) error {
 
 	// Use the json.MarshalIndent() function so that whitespace is added to the encoded JSON. Use
 	// no line prefix and tab indents for each element.
@@ -43,7 +42,9 @@ func writeJSON(w http.ResponseWriter, status int, data envelope, headers http.He
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	if _, err := w.Write(js); err != nil {
+	// if _, err := w.Write(js); err != nil {
+	// 	return log.Println(err)
 
-	}
+	// }
+	return nil
 }

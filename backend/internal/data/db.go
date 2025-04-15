@@ -8,15 +8,15 @@ import (
 	"time"
 )
 
-func OpenDB() (*sql.DB, error) {
-	dsn := os.Getenv("CONSTANCEGUILD_DB_DSN")
+func OpenDB(dsn string) (*sql.DB, error) {
+	dsn := os.Getenv(dsn)
 	if dsn == "" {
 		return nil, fmt.Errorf("CONSTANCEGUILD_DB_DSN is not set")
 	}
 
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
-		log.Fatal("Missing database connection string: ",err)
+		log.Fatal("Missing database connection string: ", err)
 	}
 
 	// Set database connection settings.

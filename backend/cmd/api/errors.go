@@ -1,4 +1,4 @@
-package errors
+package main
 
 import (
 	"net/http"
@@ -8,10 +8,10 @@ import (
 
 // errorResponse.
 func errorResponse(w http.ResponseWriter, r *http.Request, status int, message interface{}) {
-	env := envelope{"error": message}
+	// env := envelope{"error": message}
 
-	err := helpers.writeJSON(w, status, env, nil)
-	if err != nil {
-		w.WriteHeader(500)
-	}
+	// err := helpers.WriteJSON()(w, status, env, nil)
+	// if err != nil {
+	// 	w.WriteHeader(500)
+	// }
 }
