@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func New() *log.Logger {
+func (app *application) New() *log.Logger {
 	return log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 
 }

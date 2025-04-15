@@ -24,7 +24,7 @@ type config struct {
 // application holds dependencies.
 type application struct {
 	config config
-	logger log.Logger
+	logger *log.Logger
 	db     *sql.DB
 }
 
@@ -37,7 +37,7 @@ func main() {
 	flag.StringVar(&cfg.dsn, "db-dsn", os.Getenv("CONSTANCEGUILD_DB_DSN"), "PostgreSQL DSN")
 	flag.Parse()
 
-	log := logger.New()
+	log := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 
 	db, err := data.OpenDB(cfg.dsn)
 	if err != nil {
@@ -47,15 +47,13 @@ func main() {
 
 	app := &application{
 		config: cfg,
-		logger: log,
 		db:     db,
+		logger: log,
 	}
-
-	router := routes.Routes(app)
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", cfg.port),
-		Handler:      router,
+		Handler:      app.routes(),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,

@@ -1,8 +1,9 @@
-package helpers
+package main
 
 import (
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -42,9 +43,9 @@ func WriteJSON(w http.ResponseWriter, status int, data envelope, headers http.He
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	// if _, err := w.Write(js); err != nil {
-	// 	return log.Println(err)
+	if _, err := w.Write(js); err != nil {
+		return log.Fatal(err)
 
-	// }
+	}
 	return nil
 }

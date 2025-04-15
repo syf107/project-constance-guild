@@ -4,15 +4,10 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
 	"time"
 )
 
 func OpenDB(dsn string) (*sql.DB, error) {
-	dsn := os.Getenv(dsn)
-	if dsn == "" {
-		return nil, fmt.Errorf("CONSTANCEGUILD_DB_DSN is not set")
-	}
 
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
