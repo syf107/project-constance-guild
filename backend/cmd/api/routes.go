@@ -37,16 +37,13 @@ func (app *application) routes() http.Handler {
 	r.Get("/v1/parties", app.showAllPartiesHandler)
 	r.Get("/v1/parties/{id}", app.showPartyDetailsHandler)
 	r.Put("/v1/parties/{id}", app.addPartyMemberHandler)
+	r.Put("/v1/parties/{id}", app.requestJoinPartyHandler)
 	r.Put("/v1/parties/{id}", app.leavePartyHandler)
 	r.Delete("/v1/parties/{id}", app.disbandPartyHandler)
 
 	// notification handler
 	r.Get("/v1/notifications", app.showAllNotifications)
-	r.Post("/v1/notifications", app.addNewQuestNotificationHandler)
-	r.Post("/v1/notifications", app.addQuestPrizeNotificationHandler)
-	r.Post("/v1/notifications", app.addPartyInvitationNotificationHandler)
-	r.Post("/v1/notifications", app.addPartyRequestNotificationHandler)
-	r.Post("/v1/notifications", app.partyRejectionNotificationHandler)
+	r.Post("/v1/notifications", app.addNewNotification)
 	r.Delete("/v1/notifications", app.deleteNotificationHandler)
 
 	return r

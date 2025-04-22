@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"flag"
 	"fmt"
 	"log"
@@ -9,7 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/syf107/constance-guild-project/internal/data"
+	"github.com/go-playground/validator/v10"
+	"github.com/syf107/constance-guild-project/internals/data"
 
 	_ "github.com/lib/pq"
 )
@@ -23,9 +23,10 @@ type config struct {
 
 // application holds dependencies.
 type application struct {
-	config config
-	logger *log.Logger
-	db     *sql.DB
+	config    config
+	Models    data.Models
+	Validator *validator.Validate
+	logger    *log.Logger
 }
 
 func main() {
@@ -46,9 +47,10 @@ func main() {
 	defer db.Close()
 
 	app := &application{
-		config: cfg,
-		db:     db,
-		logger: log,
+		config:    cfg,
+		Models:    data.NewModels(db),
+		Validator: validator.New(),
+		logger:    log,
 	}
 
 	srv := &http.Server{

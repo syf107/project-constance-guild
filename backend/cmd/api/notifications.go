@@ -10,23 +10,11 @@ func (app *application) showAllNotifications(w http.ResponseWriter, r *http.Requ
 }
 
 // this will add new notifications when
-func (app *application) addNewQuestNotificationHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) addNewNotification(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (app *application) addQuestPrizeNotificationHandler(w http.ResponseWriter, r *http.Request) {
-
-}
-
-func (app *application) addPartyInvitationNotificationHandler(w http.ResponseWriter, r *http.Request) {
-
-}
-
-func (app *application) addPartyRequestNotificationHandler(w http.ResponseWriter, r *http.Request) {
-
-}
-
-func (app *application) partyRejectionNotificationHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) readNotification(w http.ResponseWriter, r *http.Request) {
 
 }
 
