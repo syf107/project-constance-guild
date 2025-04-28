@@ -1,6 +1,9 @@
 package main
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 // Quest Handler
 func (app *application) createQuestHandler(w http.ResponseWriter, r *http.Request) {
@@ -8,6 +11,7 @@ func (app *application) createQuestHandler(w http.ResponseWriter, r *http.Reques
 }
 
 func (app *application) showAllQuestsHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("")
 }
 
 func (app *application) showOneQuestHandler(w http.ResponseWriter, r *http.Request) {

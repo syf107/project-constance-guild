@@ -10,6 +10,9 @@ import (
 func (app *application) routes() http.Handler {
 	r := chi.NewRouter()
 
+	r.NotFound(app.notFoundResponse)
+	r.MethodNotAllowed(app.methodNotAllowedResponse)
+
 	//user handler
 	r.Post("/v1/users", app.registerUserHandler)
 	r.Put("/v1/users/activated", app.activateUserHandler)
@@ -17,7 +20,7 @@ func (app *application) routes() http.Handler {
 	// quest handlers.
 	r.Post("/v1/quests", app.createQuestHandler)
 	r.Get("/v1/quests", app.showAllQuestsHandler)
-	r.Get("v1/quests/{id}", app.showOneQuestHandler)
+	r.Get("/v1/quests/{id}", app.showOneQuestHandler)
 
 	// adventurer handlers.
 	r.Post("/v1/adventurers", app.createAdventurerHandler)
@@ -26,7 +29,7 @@ func (app *application) routes() http.Handler {
 
 	// quest application handler.
 	r.Post("/v1/quests/applications", app.applyQuestsHandler)
-	r.Get("/v1/quests/applications/{id}", app.showAllAppliedQuest)
+	r.Get("/v1/quests/applications", app.showAllAppliedQuest)
 	r.Get("/v1/quests/applications/{id}", app.showOneAppliedQuest)
 	r.Put("/v1/quests/applications/{id}", app.withdrawAppliedQuestHandler)
 	r.Put("/v1/quests/applications/{id}", app.completeAppliedQuestHandler)

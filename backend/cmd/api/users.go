@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/syf107/constance-guild-project/internals/data"
-	"github.com/syf107/constance-guild-project/internals/helpers"
 )
 
 // USER handler
@@ -14,7 +13,7 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 	var input struct {
 		FullName string `json:"full_name" validate:"required"`
 		Email    string `json:"email" validate:"required,email"`
-		Password string `json:"password" validate:"required,min8"`
+		Password string `json:"password" validate:"required,min=5"`
 	}
 
 	// read the input data
@@ -43,7 +42,7 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 
 	err := app.Models.Users.Insert(user)
 	if err != nil {
-		http.Error(w, "Could not create user", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -54,7 +53,7 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 	}
 
 	// Later you can send the token to email, for now return in JSON
-	helpers.WriteJSON(w, http.StatusCreated, helpers.Envelope{
+	app.writeJSON(w, http.StatusCreated, envelope{
 		"message": "user registered",
 		"token":   token.Plaintext,
 	}, nil)
@@ -63,7 +62,7 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 
 func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Request) {
 	var input struct {
-		TokenPlaintext string `json:"email" validate:"required, len=26"`
+		TokenPlaintext string `json:"token" validate:"required,len=26"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
@@ -78,12 +77,16 @@ func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Reque
 	}
 
 	user, err := app.Models.Users.GetForToken(data.ScopeActivation, input.TokenPlaintext)
+	if err != nil {
+		http.Error(w, "Invalid or expired token", http.StatusBadRequest)
+		return
+	}
 
 	user.Activated = true
 
 	err = app.Models.Users.Update(user)
 	if err != nil {
-		http.Error(w, "Could not activate user", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -92,5 +95,5 @@ func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Reque
 		http.Error(w, "Token cleanup failed", http.StatusInternalServerError)
 	}
 
-	helpers.WriteJSON(w, http.StatusOK, helpers.Envelope{"message": "activated"}, nil)
+	app.writeJSON(w, http.StatusOK, envelope{"message": "activated"}, nil)
 }

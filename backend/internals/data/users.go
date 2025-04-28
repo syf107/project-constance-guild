@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"database/sql"
 	"errors"
+	"fmt"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -76,19 +77,23 @@ func (m UserModel) Insert(user *User) error {
 // get all the data with the scope and that token
 func (m UserModel) GetForToken(tokenScope, tokenPlaintext string) (*User, error) {
 	tokenHash := sha256.Sum256([]byte(tokenPlaintext))
+	fmt.Println(tokenPlaintext)
+	fmt.Println(tokenHash)
+	fmt.Println(tokenHash[:])
 
 	query := `
-		SELECT users.id, users.full_name, users.email, users.password_hash, users.activated, users.created_at, users.version
+		SELECT users.id, users.full_name, users.email, users.password_hash, users.activated, users.version, users.created_at
 		FROM users
 		INNER JOIN tokens ON users.id = tokens.user_id
-		WHERE tokens.hash = $1 AND tokens.scope = $2 AND t.expiry > now()`
+		WHERE tokens.hash = $1 AND tokens.scope = $2 AND tokens.expiry > $3`
 
-	args := []interface{}{tokenHash, tokenScope}
+	args := []interface{}{tokenHash[:], tokenScope, time.Now()}
+
+	var user User
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	var user User
 	err := m.DB.QueryRowContext(ctx, query, args...).Scan(
 		&user.ID,
 		&user.FullName,
@@ -105,6 +110,8 @@ func (m UserModel) GetForToken(tokenScope, tokenPlaintext string) (*User, error)
 		}
 		return nil, err
 	}
+
+	//return matching user
 	return &user, nil
 
 }
