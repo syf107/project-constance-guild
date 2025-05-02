@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"time"
 
@@ -18,13 +19,14 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 
 	// read the input data
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-		http.Error(w, "Invalid request", http.StatusBadRequest)
+		app.badRequestResponse(w, r, err)
 		return
 	}
 
 	//validating the input
 	if err := app.Validator.Struct(input); err != nil {
-		http.Error(w, "Validation failed: "+err.Error(), http.StatusUnprocessableEntity)
+		errors := app.collectValidationErrors(err)
+		app.failedValidationResponse(w, r, errors)
 		return
 	}
 
@@ -36,19 +38,24 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 
 	//hash password.
 	if err := user.Password.Set(input.Password); err != nil {
-		http.Error(w, "Failed to hash password", http.StatusInternalServerError)
+		app.serverErrorResponse(w, r, err)
 		return
 	}
 
 	err := app.Models.Users.Insert(user)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		switch {
+		case errors.Is(err, data.ErrDuplicateEmail):
+			app.failedValidationResponse(w, r, map[string]string{"email": "a user with this email already exists"})
+		default:
+			app.serverErrorResponse(w, r, err)
+		}
 		return
 	}
 
 	token, err := app.Models.Tokens.New(user.ID, 3*24*time.Hour, data.ScopeActivation)
 	if err != nil {
-		http.Error(w, "Failed to generate token", http.StatusInternalServerError)
+		app.serverErrorResponse(w, r, err)
 		return
 	}
 
@@ -66,34 +73,47 @@ func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Reque
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-		http.Error(w, "Invalid request", http.StatusBadRequest)
+
+		app.badRequestResponse(w, r, err)
 		return
 	}
 
 	// validate the token
 	if err := app.Validator.Struct(input); err != nil {
-		http.Error(w, "Validation error:"+err.Error(), http.StatusUnprocessableEntity)
+		errors := app.collectValidationErrors(err)
+		app.failedValidationResponse(w, r, errors)
 		return
 	}
 
+	// get the user from the token.
 	user, err := app.Models.Users.GetForToken(data.ScopeActivation, input.TokenPlaintext)
 	if err != nil {
-		http.Error(w, "Invalid or expired token", http.StatusBadRequest)
+		app.badRequestResponse(w, r, err)
 		return
 	}
 
+	// change the value of user into activated.
 	user.Activated = true
 
+	// update the new user value to users, with activated = true
 	err = app.Models.Users.Update(user)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		switch {
+		case errors.Is(err, data.ErrEditConflict):
+			app.editConflictResponse(w, r)
+		default:
+			app.serverErrorResponse(w, r, err)
+		}
 	}
 
+	// delete all the token with scope and user related.
 	err = app.Models.Tokens.DeleteAllForUser(data.ScopeActivation, user.ID)
 	if err != nil {
-		http.Error(w, "Token cleanup failed", http.StatusInternalServerError)
+		app.serverErrorResponse(w, r, err)
 	}
 
-	app.writeJSON(w, http.StatusOK, envelope{"message": "activated"}, nil)
+	err = app.writeJSON(w, http.StatusOK, envelope{"user": user}, nil)
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
 }

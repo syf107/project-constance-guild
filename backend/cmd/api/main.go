@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/syf107/constance-guild-project/internals/data"
+	"github.com/syf107/constance-guild-project/internals/jsonlog"
 
 	_ "github.com/lib/pq"
 )
@@ -26,7 +27,7 @@ type application struct {
 	config    config
 	Models    data.Models
 	Validator *validator.Validate
-	logger    *log.Logger
+	logger    *jsonlog.Logger
 }
 
 func main() {
@@ -38,7 +39,7 @@ func main() {
 	flag.StringVar(&cfg.dsn, "db-dsn", os.Getenv("CONSTANCEGUILD_DB_DSN"), "PostgreSQL DSN")
 	flag.Parse()
 
-	log := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	logger := jsonlog.NewLogger(os.Stdout, jsonlog.LevelInfo)
 
 	db, err := data.OpenDB(cfg.dsn)
 	if err != nil {
@@ -50,7 +51,7 @@ func main() {
 		config:    cfg,
 		Models:    data.NewModels(db),
 		Validator: validator.New(),
-		logger:    log,
+		logger:    logger,
 	}
 
 	srv := &http.Server{

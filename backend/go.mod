@@ -6,6 +6,7 @@ toolchain go1.23.8
 
 require (
 	github.com/go-chi/chi/v5 v5.2.1
+	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/go-playground/validator/v10 v10.26.0
 	github.com/lib/pq v1.10.9
 	golang.org/x/crypto v0.37.0
@@ -19,4 +20,5 @@ require (
 	golang.org/x/net v0.34.0 // indirect
 	golang.org/x/sys v0.32.0 // indirect
 	golang.org/x/text v0.24.0 // indirect
+	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 )
