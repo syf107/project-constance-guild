@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
 	"net/http"
 	"time"
@@ -14,17 +13,17 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 	var input struct {
 		FullName string `json:"full_name" validate:"required"`
 		Email    string `json:"email" validate:"required,email"`
-		Password string `json:"password" validate:"required,min=5"`
+		Password string `json:"password" validate:"required,min=6"`
 	}
 
 	// read the input data
-	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+	if err := app.readJSON(w, r, &input); err != nil {
 		app.badRequestResponse(w, r, err)
 		return
 	}
 
 	//validating the input
-	if err := app.Validator.Struct(input); err != nil {
+	if err := app.validator.Struct(input); err != nil {
 		errors := app.collectValidationErrors(err)
 		app.failedValidationResponse(w, r, errors)
 		return
@@ -42,7 +41,7 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	err := app.Models.Users.Insert(user)
+	err := app.models.Users.Insert(user)
 	if err != nil {
 		switch {
 		case errors.Is(err, data.ErrDuplicateEmail):
@@ -53,7 +52,7 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	token, err := app.Models.Tokens.New(user.ID, 3*24*time.Hour, data.ScopeActivation)
+	token, err := app.models.Tokens.New(user.ID, 3*24*time.Hour, data.ScopeActivation)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 		return
@@ -72,21 +71,21 @@ func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Reque
 		TokenPlaintext string `json:"token" validate:"required,len=26"`
 	}
 
-	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-
+	// read the json and put it to input variable.
+	if err := app.readJSON(w, r, &input); err != nil {
 		app.badRequestResponse(w, r, err)
 		return
 	}
 
 	// validate the token
-	if err := app.Validator.Struct(input); err != nil {
+	if err := app.validator.Struct(input); err != nil {
 		errors := app.collectValidationErrors(err)
 		app.failedValidationResponse(w, r, errors)
 		return
 	}
 
 	// get the user from the token.
-	user, err := app.Models.Users.GetForToken(data.ScopeActivation, input.TokenPlaintext)
+	user, err := app.models.Users.GetForToken(data.ScopeActivation, input.TokenPlaintext)
 	if err != nil {
 		app.badRequestResponse(w, r, err)
 		return
@@ -96,7 +95,7 @@ func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Reque
 	user.Activated = true
 
 	// update the new user value to users, with activated = true
-	err = app.Models.Users.Update(user)
+	err = app.models.Users.Update(user)
 	if err != nil {
 		switch {
 		case errors.Is(err, data.ErrEditConflict):
@@ -107,7 +106,7 @@ func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Reque
 	}
 
 	// delete all the token with scope and user related.
-	err = app.Models.Tokens.DeleteAllForUser(data.ScopeActivation, user.ID)
+	err = app.models.Tokens.DeleteAllForUser(data.ScopeActivation, user.ID)
 	if err != nil {
 		app.serverErrorResponse(w, r, err)
 	}

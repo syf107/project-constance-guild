@@ -21,11 +21,7 @@ func (app *application) addPartyMemberHandler(w http.ResponseWriter, r *http.Req
 
 }
 
-func (app *application) invitePartyHandler(w http.ResponseWriter, r *http.Request) {
-
-}
-
-func (app *application) requestJoinPartyHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) requestJoiningParty(w http.ResponseWriter, r *http.Request) {
 
 }
 

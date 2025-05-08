@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -25,9 +26,10 @@ type config struct {
 // application holds dependencies.
 type application struct {
 	config    config
-	Models    data.Models
-	Validator *validator.Validate
+	models    data.Models
+	validator *validator.Validate
 	logger    *jsonlog.Logger
+	wg        sync.WaitGroup
 }
 
 func main() {
@@ -49,8 +51,8 @@ func main() {
 
 	app := &application{
 		config:    cfg,
-		Models:    data.NewModels(db),
-		Validator: validator.New(),
+		models:    data.NewModels(db),
+		validator: validator.New(),
 		logger:    logger,
 	}
 

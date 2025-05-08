@@ -23,7 +23,7 @@ func (app *application) applyQuestsHandler(w http.ResponseWriter, r *http.Reques
 
 }
 
-func (app *application) showAllAppliedQuest(w http.ResponseWriter, r *http.Request) {
+func (app *application) listAdventurerAppliedQuestHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
@@ -32,10 +32,6 @@ func (app *application) showOneAppliedQuest(w http.ResponseWriter, r *http.Reque
 }
 
 func (app *application) withdrawAppliedQuestHandler(w http.ResponseWriter, r *http.Request) {
-
-}
-
-func (app *application) deleteAppliedQuestHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
