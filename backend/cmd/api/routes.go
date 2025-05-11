@@ -10,12 +10,25 @@ import (
 func (app *application) routes() http.Handler {
 	r := chi.NewRouter()
 
+	r.Use(app.authenticate)
+
 	r.NotFound(app.notFoundResponse)
 	r.MethodNotAllowed(app.methodNotAllowedResponse)
 
-	//user handler
-	r.Post("/v1/users", app.registerUserHandler)
-	r.Put("/v1/users/activated", app.activateUserHandler)
+	r.Group(func(r chi.Router) {
+		//user handler
+		r.Post("/v1/users", app.registerUserHandler)
+		r.Put("/v1/users/activated", app.activateUserHandler)
+	})
+
+	// must be logged in.
+	r.Group(func(r chi.Router) {
+		r.Use(app.requireAuthenticatedUser)
+	})
+
+	r.Group(func(r chi.Router) {
+		r.Use(app.requiredActivatedUser)
+	})
 
 	// adventurer handlers.
 	r.Post("/v1/adventurers", app.createAdventurerHandler)

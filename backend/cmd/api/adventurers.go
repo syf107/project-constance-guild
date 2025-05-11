@@ -9,6 +9,10 @@ import (
 
 // Adventurer Handler
 func (app *application) createAdventurerHandler(w http.ResponseWriter, r *http.Request) {
+
+	// get users.id value
+	user := app.contextGetUser(r)
+
 	// declare anonymous struct to hold the info.
 	var input struct {
 		Class string `json:"class" validate:"required,oneof=warrior assassin mage range cleric"`
