@@ -51,7 +51,15 @@ func (app *application) createAdventurerHandler(w http.ResponseWriter, r *http.R
 
 }
 
-func (app *application) listOfAdventurersHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) showAllAdventurersHandler(w http.ResponseWriter, r *http.Request) {
+	adventurers, err := app.models.Adventurers.GetAll()
+	if err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
+
+	if err := app.writeJSON(w, http.StatusOK, envelope{"adventurers": adventurers}, nil); err != nil {
+		app.serverErrorResponse(w, r, err)
+	}
 
 }
 

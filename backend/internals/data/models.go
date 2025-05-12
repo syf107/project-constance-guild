@@ -3,6 +3,8 @@ package data
 import (
 	"database/sql"
 	"errors"
+	"log"
+	"os"
 )
 
 var (
@@ -18,13 +20,29 @@ type Models struct {
 	Users       UserModel
 	Tokens      TokenModel
 	Adventurers AdventurerModel
-	// Quests      QuestModel
+	Quests      QuestModel
 }
 
 func NewModels(db *sql.DB) Models {
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 	return Models{
-		Users:       UserModel{DB: db},
-		Tokens:      TokenModel{DB: db},
-		Adventurers: AdventurerModel{DB: db},
+		Users: UserModel{
+			DB:       db,
+			InfoLog:  infoLog,
+			ErrorLog: errorLog,
+		},
+		Tokens: TokenModel{
+			DB:       db,
+			InfoLog:  infoLog,
+			ErrorLog: errorLog},
+		Adventurers: AdventurerModel{
+			DB:       db,
+			InfoLog:  infoLog,
+			ErrorLog: errorLog},
+		Quests: QuestModel{
+			DB:       db,
+			InfoLog:  infoLog,
+			ErrorLog: errorLog},
 	}
 }

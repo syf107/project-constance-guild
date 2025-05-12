@@ -11,7 +11,6 @@ func (app *application) routes() http.Handler {
 	r := chi.NewRouter()
 
 	r.Use(app.authenticate)
-
 	r.NotFound(app.notFoundResponse)
 	r.MethodNotAllowed(app.methodNotAllowedResponse)
 
@@ -24,42 +23,50 @@ func (app *application) routes() http.Handler {
 	// must be logged in.
 	r.Group(func(r chi.Router) {
 		r.Use(app.requireAuthenticatedUser)
+
+		// adventurers handlers
+		r.Post("/v1/adventurers", app.createAdventurerHandler)
+		r.Get("/v1/adventurers", app.showAllAdventurersHandler)
+
+		// quests handlers
+		r.Get("/v1/quests", app.showAllQuestsHandler)
+
+		// parties handlers
+		r.Get("/v1/parties", app.showAllPartiesHandler)
+
+		// notification handlers
+		r.Get("/v1/notifications", app.showAllNotifications)
+
 	})
 
 	r.Group(func(r chi.Router) {
 		r.Use(app.requiredActivatedUser)
+
+		// adventurers handlers
+		r.Get("/v1/adventurers/{id}", app.showAdventurerHandler)
+		r.Get("/v1/adventurers/user", app.showMyAdventurerDataHandler)
+		r.Put("/v1/adventurers/user", app.updateMyAdventurerDataHandler)
+
+		// quests handlers
+		r.Post("/v1/quests", app.createQuestHandler)
+		r.Post("/v1/quests/applications", app.applyQuestsHandler)
+		r.Get("/v1/quests/applications", app.listAdventurerAppliedQuestHandler)
+		r.Put("/v1/quests/applications/{id}", app.withdrawAppliedQuestHandler)
+		r.Put("/v1/quests/applications/{id}", app.completeAppliedQuestHandler)
+
+		// notifications handlers
+		r.Post("/v1/notifications", app.addNewNotification)
+		r.Delete("/v1/notifications", app.deleteNotificationHandler)
+
+		// party handler
+		r.Post("/v1/parties", app.createPartyHandler)
+		r.Get("/v1/parties/{id}", app.showPartyDetailsHandler)
+		r.Put("/v1/parties/{id}", app.addPartyMemberHandler)
+		r.Put("/v1/parties/{id}", app.requestJoiningParty)
+		r.Put("/v1/parties/{id}", app.leavePartyHandler)
+		r.Delete("/v1/parties/{id}", app.disbandPartyHandler)
+
 	})
-
-	// adventurer handlers.
-	r.Post("/v1/adventurers", app.createAdventurerHandler)
-	r.Get("/v1/adventurers", app.listOfAdventurersHandler)
-	r.Get("/v1/adventurers/{id}", app.showAdventurerHandler)
-	r.Get("/v1/adventurers/user", app.showMyAdventurerDataHandler)
-	r.Put("/v1/adventurers/user", app.updateMyAdventurerDataHandler) // notification button
-
-	// quest handlers.
-	r.Post("/v1/quests", app.createQuestHandler)
-	r.Get("/v1/quests", app.showAllQuestsHandler)
-
-	// quest application handler.
-	r.Post("/v1/quests/applications", app.applyQuestsHandler)
-	r.Get("/v1/quests/applications", app.listAdventurerAppliedQuestHandler)
-	r.Put("/v1/quests/applications/{id}", app.withdrawAppliedQuestHandler)
-	r.Put("/v1/quests/applications/{id}", app.completeAppliedQuestHandler)
-
-	// party handler
-	r.Post("/v1/parties", app.createPartyHandler)
-	r.Get("/v1/parties", app.showAllPartiesHandler)
-	r.Get("/v1/parties/{id}", app.showPartyDetailsHandler)
-	r.Put("/v1/parties/{id}", app.addPartyMemberHandler)
-	r.Put("/v1/parties/{id}", app.requestJoiningParty)
-	r.Put("/v1/parties/{id}", app.leavePartyHandler)
-	r.Delete("/v1/parties/{id}", app.disbandPartyHandler)
-
-	// notification handler
-	r.Get("/v1/notifications", app.showAllNotifications)
-	r.Post("/v1/notifications", app.addNewNotification)
-	r.Delete("/v1/notifications", app.deleteNotificationHandler)
 
 	return r
 }
