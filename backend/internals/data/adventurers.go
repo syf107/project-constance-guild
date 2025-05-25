@@ -36,7 +36,7 @@ func (m AdventurerModel) Insert(adventurer *Adventurer) error {
 	query := `
 		INSERT INTO adventurers(user_id, class)
 		VALUES ($1, $2)
-		RETURNIN id, created_at
+		RETURNING id, created_at
 		`
 
 	args := []interface{}{adventurer.ID, adventurer.Class}
@@ -49,9 +49,9 @@ func (m AdventurerModel) Insert(adventurer *Adventurer) error {
 
 func (m AdventurerModel) GetAll() ([]*AdventurerWithUser, error) {
 	query := `
-		SELECT adventurers.id, adventurers.class,  adventurers.reputation, adventurers.party, adventurers.contribution_points 
-		FROM adventurers 
-		JOIN users ON adventurers.user_id = users.id
+		SELECT a.id, a.class,  a.reputation, a.party, a.contribution_points 
+		FROM adventurers a 
+		JOIN users u ON a.user_id = u.id
 		`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)

@@ -10,14 +10,15 @@ import (
 func (app *application) routes() http.Handler {
 	r := chi.NewRouter()
 
-	r.Use(app.authenticate)
 	r.NotFound(app.notFoundResponse)
 	r.MethodNotAllowed(app.methodNotAllowedResponse)
+	r.Use(app.authenticate)
 
 	r.Group(func(r chi.Router) {
 		//user handler
 		r.Post("/v1/users", app.registerUserHandler)
 		r.Put("/v1/users/activated", app.activateUserHandler)
+		r.Post("v1/tokens/authentication", app.createAuthenticationTokenHandler)
 	})
 
 	// must be logged in.

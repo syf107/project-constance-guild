@@ -21,6 +21,7 @@ type Models struct {
 	Tokens      TokenModel
 	Adventurers AdventurerModel
 	Quests      QuestModel
+	Parties     PartyModel
 }
 
 func NewModels(db *sql.DB) Models {
@@ -41,6 +42,10 @@ func NewModels(db *sql.DB) Models {
 			InfoLog:  infoLog,
 			ErrorLog: errorLog},
 		Quests: QuestModel{
+			DB:       db,
+			InfoLog:  infoLog,
+			ErrorLog: errorLog},
+		Parties: PartyModel{
 			DB:       db,
 			InfoLog:  infoLog,
 			ErrorLog: errorLog},

@@ -151,10 +151,10 @@ func (m UserModel) GetForToken(tokenScope, tokenPlaintext string) (*User, error)
 	tokenHash := sha256.Sum256([]byte(tokenPlaintext))
 
 	query := `
-		SELECT users.id, users.full_name, users.email, users.password_hash, users.activated, users.version, users.created_at
-		FROM users
-		INNER JOIN tokens ON users.id = tokens.user_id
-		WHERE tokens.hash = $1 AND tokens.scope = $2 AND tokens.expiry > $3`
+		SELECT u.id, u.full_name, u.email, u.password_hash, u.activated, u.version, u.created_at
+		FROM users u
+		INNER JOIN tokens t ON u.id = t.user_id
+		WHERE t.hash = $1 AND t.scope = $2 AND t.expiry > $3`
 
 	args := []interface{}{tokenHash[:], tokenScope, time.Now()}
 
